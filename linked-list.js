@@ -46,12 +46,14 @@ export default class LinkedList {
     if (index === 0) return this.#head;
     if ( index === (this.#size - 1) ) return this.#tail;
 
-    if ( (index > 0) && (index < this.#size) ) {
-      let currentNode = this.#head;
+    let currentNode = this.#head;
 
+    if ( (index > 0) && (index < this.#size) ) {
+      
       for (let i = 1; i <= index; i++) {
         currentNode = currentNode.nextNode;
       }
+
     }
 
     return currentNode;
@@ -109,6 +111,51 @@ export default class LinkedList {
     string += 'null';
 
     return string;
+  }
+
+  insertAt(index, value) {
+    // [0, 1, 3, 4]
+    // size is 4
+    // insertAt(2, 2) should insert the value "2" at index 2
+    // Loop through the list and save elements at (index) and (index - 1)
+    // create new node with "value" and nextNode to (index)
+    // go to (index - 1) index and change its nextNode to the new node
+    // increase size by 1
+
+    let currentNode = this.#head;
+    let nodeBeforeTarget;
+    let nodeAtTarget;
+
+    for (let i = 0; i <= index; i++) {
+
+      if ( i === (index - 1) ) {
+        nodeBeforeTarget = currentNode;
+      } else if (i === index) {
+        nodeAtTarget = currentNode;
+      }
+      
+      currentNode = currentNode.nextNode;
+    }
+
+    let nodeToInsert = new Node(value, nodeAtTarget);
+    nodeBeforeTarget.nextNode = nodeToInsert;
+
+    return ++this.#size;
+  }
+
+  removeAt(index) {
+    // [0, 1, 2, 3, 4]
+    // find element at(index - 1) and store it in a variable
+    // find element at(index + 1) and store it in a variable
+    // change nextNode property of element at (index - 1) to element at (index + 1)
+    // decrease size by 1
+
+    const nodeBeforeTarget = this.at(index - 1);
+    const nodeAfterTarget = this.at(index + 1);
+
+    nodeBeforeTarget.nextNode = nodeAfterTarget;
+
+    return --this.#size;
   }
 
 }
